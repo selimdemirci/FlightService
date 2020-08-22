@@ -3,9 +3,11 @@ package com.demo.flightservice.model;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,21 +34,22 @@ public class Flight {
 
     private double price;
     private int bookedSeatsCount;
+    private int totalSeatsCount;
 
     @Enumerated(EnumType.STRING)
     private PlaneType planeType;
 
     private LocalDateTime departureTime;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "COMPANY_ID", nullable = false)
     private AirlineCompany company;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "FLIGHT_ROUTE_ID", nullable = false)
     private FlightRoute route;
 
-    @OneToMany(mappedBy = "flight")
+    @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL , orphanRemoval = true)
     private List<Ticket> tickets;
     
 }

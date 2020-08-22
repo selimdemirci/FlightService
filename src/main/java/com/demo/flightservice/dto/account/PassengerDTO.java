@@ -1,4 +1,4 @@
-package com.demo.flightservice.dto.passenger;
+package com.demo.flightservice.dto.account;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 public class PassengerDTO {
 
+    
     @JsonProperty("name")
     private String name;
 
@@ -16,6 +17,10 @@ public class PassengerDTO {
     @JsonProperty("age")
     private int age;
 
+    @JsonProperty("creditCardNumber")
+    private String creditCardNumber;
+
     @JsonProperty("budget")
-    private BillingAccountDTO billingAccount;
+    private double budget;
+
 }

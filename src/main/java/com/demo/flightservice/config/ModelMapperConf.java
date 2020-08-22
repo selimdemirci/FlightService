@@ -1,4 +1,4 @@
-package com.demo.flightservice.utility;
+package com.demo.flightservice.config;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class AdapterConf {
+public class ModelMapperConf {
 
     @Bean
 	public ModelMapper getModelMapper() {

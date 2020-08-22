@@ -3,6 +3,7 @@ package com.demo.flightservice.model;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,11 +28,11 @@ public class Ticket {
     private String seat;
     private LocalDateTime bookingDate = LocalDateTime.now();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "PASSENGER_ID", nullable = false)
     private Passenger passenger;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "FLIGHT_ID", nullable = false)
     private Flight flight;
 

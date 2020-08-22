@@ -4,9 +4,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.flightservice.dto.airline.AirlineCompanyDTO;
-import com.demo.flightservice.service.impl.AirlineCompanyServiceImpl;
+import com.demo.flightservice.service.AirlineCompanyService;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -15,15 +16,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequestMapping("/company")
 public class AirlineCompanyController {
 
-    private final AirlineCompanyServiceImpl airlineCompanyService;
+    private final AirlineCompanyService airlineCompanyService;
 
-    AirlineCompanyController(AirlineCompanyServiceImpl airlineCompanyService){
+    AirlineCompanyController(AirlineCompanyService airlineCompanyService){
         this.airlineCompanyService = airlineCompanyService;
     }
 
-    @PostMapping(value="/add")
-    public ResponseEntity<AirlineCompanyDTO> addAirlineCompany(@RequestBody AirlineCompanyDTO entity) {
-        return ResponseEntity.ok(airlineCompanyService.add(entity));
+    @PostMapping(value="/create")
+    public ResponseEntity<String> addAirlineCompany(@Validated @RequestBody AirlineCompanyDTO company) {
+        airlineCompanyService.add(company);
+        return ResponseEntity.ok(company.toString() + " has been created.");
     }
     
     

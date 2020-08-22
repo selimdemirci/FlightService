@@ -1,6 +1,5 @@
 package com.demo.flightservice.dto.flight;
 
-import com.demo.flightservice.dto.airport.AirportDTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
@@ -9,8 +8,8 @@ import lombok.Data;
 public class FlightRouteDTO {
     
     @JsonProperty("from")
-    private AirportDTO from;
+    private String from;
 
     @JsonProperty("destination")
-    private AirportDTO destination;
+    private String destination;
 }
