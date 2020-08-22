@@ -47,6 +47,13 @@ public class FlightRouteServiceImpl implements FlightRouteService {
         return flightRouteRepository.flightRouteCount(from,destination) > 0;
     }
 
+    public boolean isFlightRouteExist(String from, String destination){
+        Airport fromA = airportService.findByName(from);
+        Airport destinationA = airportService.findByName(destination);
+
+        return flightRouteRepository.flightRouteCount(fromA,destinationA) > 0;
+    }
+
     @Override
     public FlightRoute create(Airport from, Airport destination) {
         FlightRoute newFlightRoute = new FlightRoute();

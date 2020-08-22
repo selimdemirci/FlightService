@@ -4,7 +4,6 @@ import javax.transaction.Transactional;
 
 import com.demo.flightservice.dto.flight.NewFlightDTO;
 import com.demo.flightservice.enums.PlaneType;
-import com.demo.flightservice.model.Airport;
 import com.demo.flightservice.model.Flight;
 import com.demo.flightservice.repository.FlightRepository;
 import com.demo.flightservice.service.AirlineCompanyService;
@@ -33,7 +32,7 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public boolean add(NewFlightDTO newFlight) {
-        if(isCompanyExist(newFlight.getCompany()) && isRouteExist(newFlight.getFrom(), newFlight.getDestination())){
+        if(airlineCompanyService.isExist(newFlight.getCompany()) && flightRouteService.isFlightRouteExist(newFlight.getFrom(), newFlight.getDestination())){
 
             PlaneType planeType = newFlight.getPlaneType();
             int totalSeatsCount = planeType.getValue();
@@ -55,18 +54,6 @@ public class FlightServiceImpl implements FlightService {
             return true;
         }
         return false;
-    }
-
-    @Override
-    public boolean isCompanyExist(String company) {
-        return airlineCompanyService.isExist(company);
-    }
-
-    @Override
-    public boolean isRouteExist(String from, String destination) {
-        Airport start = airportService.findByName(from);
-        Airport end = airportService.findByName(destination);
-        return flightRouteService.isFlightRouteExist(start, end);
     }
     
 }
