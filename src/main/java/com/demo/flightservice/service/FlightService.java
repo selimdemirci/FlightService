@@ -9,7 +9,11 @@ import com.demo.flightservice.dto.flight.FlightDTO;
 public interface FlightService {
 
     boolean add(NewFlightDTO newFlight);
-    List<FlightDTO> getAllFlights();
-    Flight findById(long id);
+
     void save(Flight flight);
+
+    Flight findById(long id);
+
+    FlightDTO getById(long id);
+    List<FlightDTO> getAllFlights();
 }

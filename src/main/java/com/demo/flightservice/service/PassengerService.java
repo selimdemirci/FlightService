@@ -6,10 +6,12 @@ import com.demo.flightservice.dto.passenger.PassengerDTO;
 import com.demo.flightservice.model.Passenger;
 
 public interface PassengerService {
-    
+
+    void save(Passenger passenger);
     void add(PassengerDTO passenger);
+
+    Passenger findById(long id);
+
     PassengerDTO getById(long id);
     List<PassengerDTO> getAllPassengers();
-    Passenger findById(long id);
-    void save(Passenger passenger);
 }

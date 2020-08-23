@@ -25,6 +25,7 @@ public class TicketToTicketDTO {
         ticketDTO.setPrice(ticket.getPrice());
         ticketDTO.setSeat(ticket.getSeat());  
         ticketDTO.setTicketStatus(ticket.getTicketStatus());
+        ticketDTO.setFlightId(flight.getId());
         ticketDTO.setCompanyName(flight.getCompany().getName());
         ticketDTO.setDepartureTime(flight.getDepartureTime());
         ticketDTO.setDestination(modelMapper.map(flight.getRoute().getDestination(), AirportDTO.class));

@@ -80,5 +80,10 @@ public class FlightServiceImpl implements FlightService {
     public void save(Flight flight) {
         flightRepository.save(flight);
     }
+
+    @Override
+    public FlightDTO getById(long id) {
+        return modelMapper.map(flightRepository.findById(id).get(), FlightDTO.class);
+    }
     
 }

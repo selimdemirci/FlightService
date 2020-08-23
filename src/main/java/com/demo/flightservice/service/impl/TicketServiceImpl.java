@@ -36,9 +36,26 @@ public class TicketServiceImpl implements TicketService {
 
 
     @Override
-    public boolean cancelReservation(long id) {
-        // TODO Auto-generated method stub
-        return false;
+    public ReservationDTO cancelReservation(long id) {
+        Ticket ticket = ticketRepository.findById(id).get();
+        Flight flight = flightService.findById(ticket.getFlight().getId());
+        Passenger passenger = passengerService.findById(ticket.getPassenger().getId());
+
+        ticket.setTicketStatus(TicketStatus.CANCELLED);
+        flight.setBookedSeatsCount(flight.getBookedSeatsCount() - 1);
+        passenger.setBudget(passenger.getBudget() + ticket.getPrice());
+
+        // PERCENTAGE A GÖRE TICKET FİYATINI DÜŞÜR
+
+        ticketRepository.save(ticket);
+        flightService.save(flight);
+        passengerService.save(passenger);
+
+        ReservationDTO reservationDTO = new ReservationDTO();
+        reservationDTO.setFlightId(flight.getId());
+        reservationDTO.setPassengerId(passenger.getId());
+
+        return reservationDTO;
     }
 
     @Override
@@ -80,6 +97,18 @@ public class TicketServiceImpl implements TicketService {
         Passenger passenger = passengerService.findById(ticket.getPassenger().getId());
 
         return ticketToTicketDTOConverter.convert(ticket, flight, passenger);
+    }
+
+    @Override
+    public double setTicketPrice() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public String deleteReservation(long id) {
+        ticketRepository.deleteById(id);
+        return "Ticket number " + id + " has been deleted.";
     }
     
 }

@@ -9,8 +9,9 @@ public interface AirportService {
 
     boolean add(AirportDTO airport);
     boolean isExist(String airportName);
+    
     Airport findByName(String airportName);
+
     AirportDTO getByName(String airportName);
     List<AirportDTO> getAllAirports();
-    
 }

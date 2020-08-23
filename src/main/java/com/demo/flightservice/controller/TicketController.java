@@ -7,6 +7,7 @@ import com.demo.flightservice.service.TicketService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,5 +36,14 @@ public class TicketController {
     public ResponseEntity<TicketDTO> findPassenger(@RequestParam long id) {
         return new ResponseEntity<>(ticketService.findTicketById(id), HttpStatus.OK);
     }
-    
+
+    @GetMapping(value = "/cancelReservation",  produces = "application/json")
+    public ResponseEntity<ReservationDTO> cancelReservation(@RequestParam long id){
+        return new ResponseEntity<>(ticketService.cancelReservation(id), HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/deleteReservation",  produces = "application/json")
+    public ResponseEntity<String> deleteReservation(@RequestParam long id){
+        return new ResponseEntity<>(ticketService.deleteReservation(id), HttpStatus.OK);
+    }
 }

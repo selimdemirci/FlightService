@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.demo.flightservice.dto.flight.FlightDTO;
 import com.demo.flightservice.dto.flight.FlightRouteDTO;
+import com.demo.flightservice.dto.flight.FlightRouteWithAirpotsDTO;
 import com.demo.flightservice.dto.flight.NewFlightDTO;
 import com.demo.flightservice.service.FlightRouteService;
 import com.demo.flightservice.service.FlightService;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -33,10 +35,20 @@ public class FlightController {
     public ResponseEntity<String> createFlightRoute(@Validated @RequestBody FlightRouteDTO flightRoute){
         boolean isCreated = flightRouteService.add(flightRoute);
         if(isCreated){
-            return new ResponseEntity<>("Flight route has been created.", HttpStatus.OK);
+            return new ResponseEntity<>("Flight route has been created.", HttpStatus.CREATED);
         }else{
             return new ResponseEntity<>("Flight route couldn't created.", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @GetMapping(value="/route/all", produces = "application/json")
+    public ResponseEntity<List<FlightRouteWithAirpotsDTO>> getAllFlightRoutes() {
+        return new ResponseEntity<>(flightRouteService.getAllFlightRoutes(), HttpStatus.OK);
+    }
+
+    @GetMapping(value="/route/find", produces = "application/json")
+    public ResponseEntity<FlightRouteWithAirpotsDTO> findFlightRoute(@RequestParam long id) {
+        return new ResponseEntity<>(flightRouteService.getById(id), HttpStatus.OK);
     }
 
 
@@ -44,7 +56,7 @@ public class FlightController {
     public ResponseEntity<String> createNewFlight(@Validated @RequestBody NewFlightDTO flight){
         boolean isCreated = flightService.add(flight);
         if(isCreated){
-            return new ResponseEntity<>("New flight has been created.", HttpStatus.OK);
+            return new ResponseEntity<>("New flight has been created.", HttpStatus.CREATED);
         }else{
             return new ResponseEntity<>("New flight couldn't created.", HttpStatus.BAD_REQUEST);
         }
@@ -53,5 +65,10 @@ public class FlightController {
     @GetMapping(value="/all", produces = "application/json")
     public ResponseEntity<List<FlightDTO>> getAllFlights() {
         return new ResponseEntity<>(flightService.getAllFlights(), HttpStatus.OK);
+    }
+
+    @GetMapping(value="/find", produces = "application/json")
+    public ResponseEntity<FlightDTO> findFlight(@RequestParam long id) {
+        return new ResponseEntity<>(flightService.getById(id), HttpStatus.OK);
     }
 }

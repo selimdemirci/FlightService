@@ -14,6 +14,9 @@ public class TicketDTO {
     @JsonProperty("id")
     private long id;
 
+    @JsonProperty("flightId")
+    private long flightId;
+
     @JsonProperty("name")
     private String name;
 

@@ -9,8 +9,9 @@ public interface AirlineCompanyService {
 
     boolean add(AirlineCompanyDTO company);
     boolean isExist(String companyName);
+
     AirlineCompany findByName(String companyName);
+
     AirlineCompanyDTO getByName(String companyName);
     List<AirlineCompanyDTO> getAllCompanies();
-
 }
