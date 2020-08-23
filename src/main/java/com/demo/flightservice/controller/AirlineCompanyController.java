@@ -1,6 +1,7 @@
 package com.demo.flightservice.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -37,8 +38,13 @@ public class AirlineCompanyController {
     }
     
     @GetMapping(value="/all", produces = "application/json")
-    public ResponseEntity<List<AirlineCompanyDTO>> addAirlineCompany() {
+    public ResponseEntity<List<AirlineCompanyDTO>> getAllAirlineCompanies() {
         return new ResponseEntity<>(airlineCompanyService.getAllCompanies(), HttpStatus.OK);
+    }
+
+    @GetMapping(value="/find", produces = "application/json")
+    public ResponseEntity<AirlineCompanyDTO> findAirlineCompany(@RequestParam String company) {
+        return new ResponseEntity<>(airlineCompanyService.getByName(company), HttpStatus.OK);
     }
     
 }

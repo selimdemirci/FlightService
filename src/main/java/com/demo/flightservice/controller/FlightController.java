@@ -51,7 +51,7 @@ public class FlightController {
     }
 
     @GetMapping(value="/all", produces = "application/json")
-    public ResponseEntity<List<FlightDTO>> addAirlineCompany() {
+    public ResponseEntity<List<FlightDTO>> getAllFlights() {
         return new ResponseEntity<>(flightService.getAllFlights(), HttpStatus.OK);
     }
 }

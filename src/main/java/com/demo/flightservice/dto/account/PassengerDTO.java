@@ -7,7 +7,9 @@ import lombok.Data;
 @Data
 public class PassengerDTO {
 
-    
+    @JsonProperty("id")
+    private long id;
+
     @JsonProperty("name")
     private String name;
 

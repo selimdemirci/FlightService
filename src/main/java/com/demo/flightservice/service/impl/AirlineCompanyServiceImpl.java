@@ -48,5 +48,10 @@ public class AirlineCompanyServiceImpl implements AirlineCompanyService {
     public List<AirlineCompanyDTO> getAllCompanies() {
         return modelMapper.map(airlineCompanyRepository.findAll(), new TypeToken<List<AirlineCompanyDTO>>(){}.getType());
     }
+
+    @Override
+    public AirlineCompanyDTO getByName(String companyName) {
+        return modelMapper.map(airlineCompanyRepository.findByName(companyName), AirlineCompanyDTO.class);
+    }
     
 }
