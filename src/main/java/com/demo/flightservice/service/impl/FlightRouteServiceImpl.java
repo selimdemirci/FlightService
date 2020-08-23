@@ -32,7 +32,7 @@ public class FlightRouteServiceImpl implements FlightRouteService {
     @Override
     public boolean add(FlightRouteDTO flightRoute) {
 
-        if (isAirportsExist(flightRoute) && !flightRoute.getFrom().equals(flightRoute.getDestination())) {
+        if (airportService.isAirportsExist(flightRoute) && !flightRoute.getFrom().equals(flightRoute.getDestination())) {
             Airport from = airportService.findByName(flightRoute.getFrom());
             Airport destination = airportService.findByName(flightRoute.getDestination());
 
@@ -44,10 +44,6 @@ public class FlightRouteServiceImpl implements FlightRouteService {
             return true;
         }
         return false;
-    }
-
-    public boolean isAirportsExist(FlightRouteDTO flightRoute) {
-        return airportService.isExist(flightRoute.getFrom()) && airportService.isExist(flightRoute.getDestination());
     }
 
     public boolean isFlightRouteExist(Airport from, Airport destination) {

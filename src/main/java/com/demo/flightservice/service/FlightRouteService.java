@@ -10,7 +10,6 @@ import com.demo.flightservice.model.FlightRoute;
 public interface FlightRouteService {
     
     boolean add(FlightRouteDTO flightRoute);
-    boolean isAirportsExist(FlightRouteDTO flightRoute);
     boolean isFlightRouteExist(Airport from, Airport destination);
     boolean isFlightRouteExist(String from, String destination);
 

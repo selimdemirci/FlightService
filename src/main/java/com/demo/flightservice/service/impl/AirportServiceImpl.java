@@ -3,6 +3,7 @@ package com.demo.flightservice.service.impl;
 import java.util.List;
 
 import com.demo.flightservice.dto.airport.AirportDTO;
+import com.demo.flightservice.dto.flight.FlightRouteDTO;
 import com.demo.flightservice.exception.AirportException;
 import com.demo.flightservice.model.Airport;
 import com.demo.flightservice.repository.AirportRepository;
@@ -59,4 +60,8 @@ public class AirportServiceImpl implements AirportService {
         return modelMapper.map(airportRepository.findAll(), new TypeToken<List<AirportDTO>>(){}.getType());
     }
     
+    @Override
+    public boolean isAirportsExist(FlightRouteDTO flightRoute) {
+        return isExist(flightRoute.getFrom()) && isExist(flightRoute.getDestination());
+    }
 }
