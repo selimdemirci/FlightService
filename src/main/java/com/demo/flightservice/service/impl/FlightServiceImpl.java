@@ -70,5 +70,15 @@ public class FlightServiceImpl implements FlightService {
     public List<FlightDTO> getAllFlights() {
         return  modelMapper.map(flightRepository.findAll(), new TypeToken<List<FlightDTO>>(){}.getType());
     }
+
+    @Override
+    public Flight findById(long id) {
+        return modelMapper.map(flightRepository.findById(id).get(), Flight.class);
+    }
+
+    @Override
+    public void save(Flight flight) {
+        flightRepository.save(flight);
+    }
     
 }

@@ -2,7 +2,7 @@ package com.demo.flightservice.service.impl;
 
 import java.util.List;
 
-import com.demo.flightservice.dto.account.PassengerDTO;
+import com.demo.flightservice.dto.passenger.PassengerDTO;
 import com.demo.flightservice.model.Passenger;
 import com.demo.flightservice.repository.PassengerRepository;
 import com.demo.flightservice.service.PassengerService;
@@ -26,18 +26,27 @@ public class PassengerServiceImpl implements PassengerService {
 
     @Override
     public void add(PassengerDTO passenger) {
-        Passenger newPassanger = modelMapper.map(passenger, Passenger.class);
-        passengerRepository.save(newPassanger);
+        passengerRepository.save(modelMapper.map(passenger, Passenger.class));
     }
 
     @Override
     public PassengerDTO getById(long id) {
-        return modelMapper.map(passengerRepository.findById(id), PassengerDTO.class);
+        return modelMapper.map(passengerRepository.findById(id).get(), PassengerDTO.class);
     }
 
     @Override
     public List<PassengerDTO> getAllPassengers() {
         return modelMapper.map(passengerRepository.findAll(), new TypeToken<List<PassengerDTO>>(){}.getType());
+    }
+
+    @Override
+    public Passenger findById(long id) {
+        return modelMapper.map(passengerRepository.findById(id).get(), Passenger.class);
+    }
+
+    @Override
+    public void save(Passenger passenger) {
+        passengerRepository.save(passenger);
     }
     
 }

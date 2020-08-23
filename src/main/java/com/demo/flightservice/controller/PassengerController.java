@@ -2,7 +2,7 @@ package com.demo.flightservice.controller;
 
 import java.util.List;
 
-import com.demo.flightservice.dto.account.PassengerDTO;
+import com.demo.flightservice.dto.passenger.PassengerDTO;
 import com.demo.flightservice.service.PassengerService;
 
 import org.springframework.http.HttpStatus;

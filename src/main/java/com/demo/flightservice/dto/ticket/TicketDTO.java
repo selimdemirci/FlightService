@@ -2,8 +2,8 @@ package com.demo.flightservice.dto.ticket;
 
 import java.time.LocalDateTime;
 
-import com.demo.flightservice.dto.flight.FlightRouteDTO;
-import com.demo.flightservice.enums.PlaneType;
+import com.demo.flightservice.dto.airport.AirportDTO;
+import com.demo.flightservice.enums.TicketStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
@@ -13,6 +13,12 @@ public class TicketDTO {
 
     @JsonProperty("id")
     private long id;
+
+    @JsonProperty("name")
+    private String name;
+
+    @JsonProperty("surname")
+    private String surname;
 
     @JsonProperty("companyName")
     private String companyName;
@@ -29,10 +35,13 @@ public class TicketDTO {
     @JsonProperty("departureTime")
     private LocalDateTime departureTime;
 
-    @JsonProperty("planeType")
-    private PlaneType planeType;
+    @JsonProperty("from")
+    private AirportDTO from;
 
-    @JsonProperty("route")
-    private FlightRouteDTO route;
+    @JsonProperty("destination")
+    private AirportDTO destination;
+
+    @JsonProperty("ticketStatus")
+    private TicketStatus ticketStatus;
 
 }

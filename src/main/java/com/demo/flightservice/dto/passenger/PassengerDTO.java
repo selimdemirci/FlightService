@@ -1,4 +1,4 @@
-package com.demo.flightservice.dto.account;
+package com.demo.flightservice.dto.passenger;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
