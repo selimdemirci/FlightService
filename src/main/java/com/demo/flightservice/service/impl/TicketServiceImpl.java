@@ -1,7 +1,5 @@
 package com.demo.flightservice.service.impl;
 
-import java.util.List;
-
 import com.demo.flightservice.dto.ticket.ReservationDTO;
 import com.demo.flightservice.dto.ticket.TicketDTO;
 import com.demo.flightservice.enums.TicketStatus;
@@ -15,7 +13,6 @@ import com.demo.flightservice.service.PassengerService;
 import com.demo.flightservice.service.TicketService;
 import com.demo.flightservice.util.converter.TicketToTicketDTO;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,16 +23,14 @@ public class TicketServiceImpl implements TicketService {
     private final TicketRepository ticketRepository;
     private final FlightService flightService;
     private final PassengerService passengerService;
-    private final ModelMapper modelMapper;
     private final TicketToTicketDTO ticketToTicketDTOConverter;
 
 
-    public TicketServiceImpl(TicketRepository ticketRepository, FlightService flightService, PassengerService passengerService, ModelMapper modelMapper,
-    TicketToTicketDTO ticketToTicketDTOConverter) {
+    public TicketServiceImpl(TicketRepository ticketRepository, FlightService flightService, PassengerService passengerService,
+        TicketToTicketDTO ticketToTicketDTOConverter) {
         this.ticketRepository = ticketRepository;
         this.flightService = flightService;
         this.passengerService = passengerService;
-        this.modelMapper = modelMapper;
         this.ticketToTicketDTOConverter = ticketToTicketDTOConverter;
     }
 

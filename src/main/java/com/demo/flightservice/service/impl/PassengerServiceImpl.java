@@ -6,6 +6,7 @@ import com.demo.flightservice.dto.passenger.PassengerDTO;
 import com.demo.flightservice.model.Passenger;
 import com.demo.flightservice.repository.PassengerRepository;
 import com.demo.flightservice.service.PassengerService;
+import com.demo.flightservice.util.MaskUtility;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -18,14 +19,17 @@ public class PassengerServiceImpl implements PassengerService {
 
     private final PassengerRepository passengerRepository;
     private final ModelMapper modelMapper;
+    private final MaskUtility maskUtility;
 
-    PassengerServiceImpl(PassengerRepository passengerRepository, ModelMapper modelMapper) {
+    PassengerServiceImpl(PassengerRepository passengerRepository, ModelMapper modelMapper, MaskUtility maskUtility) {
         this.passengerRepository = passengerRepository;
         this.modelMapper = modelMapper;
+        this.maskUtility = maskUtility;
     }
 
     @Override
     public void add(PassengerDTO passenger) {
+        passenger.setCreditCardNumber(maskUtility.maskCreditCardNumber(passenger.getCreditCardNumber()));
         passengerRepository.save(modelMapper.map(passenger, Passenger.class));
     }
 
