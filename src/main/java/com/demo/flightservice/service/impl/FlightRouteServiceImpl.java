@@ -3,7 +3,7 @@ package com.demo.flightservice.service.impl;
 import java.util.List;
 
 import com.demo.flightservice.dto.flight.FlightRouteDTO;
-import com.demo.flightservice.dto.flight.FlightRouteWithAirpotsDTO;
+import com.demo.flightservice.dto.flight.FlightRouteWithAirportsDTO;
 import com.demo.flightservice.model.Airport;
 import com.demo.flightservice.model.FlightRoute;
 import com.demo.flightservice.repository.FlightRouteRepository;
@@ -76,12 +76,12 @@ public class FlightRouteServiceImpl implements FlightRouteService {
     }
 
     @Override
-    public List<FlightRouteWithAirpotsDTO> getAllFlightRoutes() {
-        return modelMapper.map(flightRouteRepository.findAll(), new TypeToken<List<FlightRouteWithAirpotsDTO>>(){}.getType());
+    public List<FlightRouteWithAirportsDTO> getAllFlightRoutes() {
+        return modelMapper.map(flightRouteRepository.findAll(), new TypeToken<List<FlightRouteWithAirportsDTO>>(){}.getType());
     }
 
     @Override
-    public FlightRouteWithAirpotsDTO getById(long id) {
-        return modelMapper.map(flightRouteRepository.findById(id).get(), FlightRouteWithAirpotsDTO.class);
+    public FlightRouteWithAirportsDTO getById(long id) {
+        return modelMapper.map(flightRouteRepository.findById(id).get(), FlightRouteWithAirportsDTO.class);
     }
 }

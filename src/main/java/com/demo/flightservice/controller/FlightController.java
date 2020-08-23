@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.demo.flightservice.dto.flight.FlightDTO;
 import com.demo.flightservice.dto.flight.FlightRouteDTO;
-import com.demo.flightservice.dto.flight.FlightRouteWithAirpotsDTO;
+import com.demo.flightservice.dto.flight.FlightRouteWithAirportsDTO;
 import com.demo.flightservice.dto.flight.NewFlightDTO;
 import com.demo.flightservice.service.FlightRouteService;
 import com.demo.flightservice.service.FlightService;
@@ -42,12 +42,12 @@ public class FlightController {
     }
 
     @GetMapping(value="/route/all", produces = "application/json")
-    public ResponseEntity<List<FlightRouteWithAirpotsDTO>> getAllFlightRoutes() {
+    public ResponseEntity<List<FlightRouteWithAirportsDTO>> getAllFlightRoutes() {
         return new ResponseEntity<>(flightRouteService.getAllFlightRoutes(), HttpStatus.OK);
     }
 
     @GetMapping(value="/route/find", produces = "application/json")
-    public ResponseEntity<FlightRouteWithAirpotsDTO> findFlightRoute(@RequestParam long id) {
+    public ResponseEntity<FlightRouteWithAirportsDTO> findFlightRoute(@RequestParam long id) {
         return new ResponseEntity<>(flightRouteService.getById(id), HttpStatus.OK);
     }
 

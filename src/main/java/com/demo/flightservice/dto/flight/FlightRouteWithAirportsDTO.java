@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class FlightRouteWithAirpotsDTO {
+public class FlightRouteWithAirportsDTO {
 
     @JsonProperty("from")
     private AirportDTO from;
