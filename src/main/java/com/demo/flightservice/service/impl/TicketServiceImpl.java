@@ -11,6 +11,7 @@ import com.demo.flightservice.repository.TicketRepository;
 import com.demo.flightservice.service.FlightService;
 import com.demo.flightservice.service.PassengerService;
 import com.demo.flightservice.service.TicketService;
+import com.demo.flightservice.util.RoundNumber;
 import com.demo.flightservice.util.converter.TicketToTicketDTO;
 
 import org.springframework.stereotype.Service;
@@ -24,14 +25,16 @@ public class TicketServiceImpl implements TicketService {
     private final FlightService flightService;
     private final PassengerService passengerService;
     private final TicketToTicketDTO ticketToTicketDTOConverter;
+    private final RoundNumber roundNumber;
 
 
     public TicketServiceImpl(TicketRepository ticketRepository, FlightService flightService, PassengerService passengerService,
-        TicketToTicketDTO ticketToTicketDTOConverter) {
+        TicketToTicketDTO ticketToTicketDTOConverter, RoundNumber roundNumber) {
         this.ticketRepository = ticketRepository;
         this.flightService = flightService;
         this.passengerService = passengerService;
         this.ticketToTicketDTOConverter = ticketToTicketDTOConverter;
+        this.roundNumber = roundNumber;
     }
 
 
@@ -44,7 +47,7 @@ public class TicketServiceImpl implements TicketService {
         ticket.setTicketStatus(TicketStatus.CANCELLED);
 
         flight.setBookedSeatsCount(flight.getBookedSeatsCount() - 1);
-        //flight.setPrice(setTicketPrice());
+        setExtraPriceCoefficient(flight);
 
         passenger.setBudget(passenger.getBudget() + ticket.getPrice());
 
@@ -75,14 +78,13 @@ public class TicketServiceImpl implements TicketService {
         Ticket ticket = new Ticket();
         ticket.setFlight(flight);
         ticket.setPassenger(passenger);
-        ticket.setPrice(flight.getPrice());
         ticket.setSeat(Integer.toString(flight.getBookedSeatsCount() + 1));
         ticket.setTicketStatus(TicketStatus.PROCEED);
 
         flight.setBookedSeatsCount(flight.getBookedSeatsCount() + 1);
-        //flight.setPrice(setTicketPrice());
-
-        double currentBudget = passenger.getBudget() - flight.getPrice();
+        setTicketPriceAndExtraPriceCoefficient(ticket, flight);
+        
+        double currentBudget = passenger.getBudget() - ticket.getPrice();
         passenger.setBudget(currentBudget);
 
         ticketRepository.save(ticket);
@@ -103,16 +105,29 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public String deleteReservation(long id) {
-        ticketRepository.deleteById(id);
-        return "Ticket number " + id + " has been deleted.";
+        Ticket ticket = ticketRepository.findById(id).get();
+        if(ticket.getTicketStatus() == TicketStatus.CANCELLED){
+            ticketRepository.deleteById(id);
+            return "Ticket number " + id + " has been deleted.";
+        }else{
+            return "Ticket number " + id + " can not delete. Firstly, you have to update ticket status as 'CANCELLED'.";
+        }
     }
 
     @Override
-    public double setTicketPrice(int oldSeatCount, int currentSeatCount, int totalSeatCount) {
-        double oldPercantage = ((double) oldSeatCount / (double) totalSeatCount) * 100;
-        double currentPercantage = ((double) currentSeatCount / (double) totalSeatCount) * 100;
+    public void setTicketPriceAndExtraPriceCoefficient(Ticket ticket, Flight flight) {
+        double extraPriceCoefficient = roundNumber.roundPercentage(flight.getBookedSeatsCount(), flight.getTotalSeatsCount()) / 10;
+        double price = flight.getPrice();
+        price += (price * extraPriceCoefficient);
 
-        return 0;
+        ticket.setPrice(price);
+        flight.setExtraPriceCoefficient(extraPriceCoefficient);
+    }
+
+    @Override
+    public void setExtraPriceCoefficient(Flight flight) {
+        double extraPriceCoefficient = roundNumber.roundPercentage(flight.getBookedSeatsCount(), flight.getTotalSeatsCount()) / 10;
+        flight.setExtraPriceCoefficient(extraPriceCoefficient);
     }
 
     

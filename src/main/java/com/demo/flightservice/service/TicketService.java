@@ -2,10 +2,13 @@ package com.demo.flightservice.service;
 
 import com.demo.flightservice.dto.ticket.ReservationDTO;
 import com.demo.flightservice.dto.ticket.TicketDTO;
+import com.demo.flightservice.model.Flight;
+import com.demo.flightservice.model.Ticket;
 
 public interface TicketService {
 
-    double setTicketPrice(int oldSeatCount, int currentSeatCount, int totalSeatCount);
+    void setTicketPriceAndExtraPriceCoefficient(Ticket ticket, Flight flight);
+    void setExtraPriceCoefficient(Flight flight);
 
     String deleteReservation(long id);
 

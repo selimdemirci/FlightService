@@ -30,6 +30,7 @@ public class Flight {
     private long id;
 
     private double price;
+    private double extraPriceCoefficient;
     private int bookedSeatsCount;
     private int totalSeatsCount;
 

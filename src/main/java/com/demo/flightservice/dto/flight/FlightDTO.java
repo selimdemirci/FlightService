@@ -24,6 +24,9 @@ public class FlightDTO {
     @JsonProperty("price")
     private double price;
 
+    @JsonProperty("extraPriceCoefficient")
+    private double extraPriceCoefficient;
+
     @JsonProperty("bookedSeatsCount")
     private int bookedSeatsCount;
 
