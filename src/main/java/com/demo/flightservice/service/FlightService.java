@@ -16,4 +16,6 @@ public interface FlightService {
 
     FlightDTO getById(long id);
     List<FlightDTO> getAllFlights();
+    List<FlightDTO> getAllFlightsByCompany(String companyName);
+    List<FlightDTO> getAllFlightsByAirport(String airportName);
 }

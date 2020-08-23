@@ -5,7 +5,7 @@ import com.demo.flightservice.dto.ticket.TicketDTO;
 
 public interface TicketService {
 
-    double setTicketPrice();
+    double setTicketPrice(int oldSeatCount, int currentSeatCount, int totalSeatCount);
 
     String deleteReservation(long id);
 

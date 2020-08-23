@@ -71,4 +71,14 @@ public class FlightController {
     public ResponseEntity<FlightDTO> findFlight(@RequestParam long id) {
         return new ResponseEntity<>(flightService.getById(id), HttpStatus.OK);
     }
+
+    @GetMapping(value="/company", produces = "application/json")
+    public ResponseEntity<List<FlightDTO>> getAllFlightsByCompany(@RequestParam String companyName) {
+        return new ResponseEntity<>(flightService.getAllFlightsByCompany(companyName), HttpStatus.OK);
+    }
+
+    @GetMapping(value="/airport", produces = "application/json")
+    public ResponseEntity<List<FlightDTO>> getAllFlightsByAirport(@RequestParam String airportName) {
+        return new ResponseEntity<>(flightService.getAllFlightsByAirport(airportName), HttpStatus.OK);
+    }
 }

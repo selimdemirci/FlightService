@@ -42,10 +42,11 @@ public class TicketServiceImpl implements TicketService {
         Passenger passenger = passengerService.findById(ticket.getPassenger().getId());
 
         ticket.setTicketStatus(TicketStatus.CANCELLED);
-        flight.setBookedSeatsCount(flight.getBookedSeatsCount() - 1);
-        passenger.setBudget(passenger.getBudget() + ticket.getPrice());
 
-        // PERCENTAGE A GÖRE TICKET FİYATINI DÜŞÜR
+        flight.setBookedSeatsCount(flight.getBookedSeatsCount() - 1);
+        //flight.setPrice(setTicketPrice());
+
+        passenger.setBudget(passenger.getBudget() + ticket.getPrice());
 
         ticketRepository.save(ticket);
         flightService.save(flight);
@@ -79,6 +80,7 @@ public class TicketServiceImpl implements TicketService {
         ticket.setTicketStatus(TicketStatus.PROCEED);
 
         flight.setBookedSeatsCount(flight.getBookedSeatsCount() + 1);
+        //flight.setPrice(setTicketPrice());
 
         double currentBudget = passenger.getBudget() - flight.getPrice();
         passenger.setBudget(currentBudget);
@@ -100,15 +102,18 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public double setTicketPrice() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
     public String deleteReservation(long id) {
         ticketRepository.deleteById(id);
         return "Ticket number " + id + " has been deleted.";
     }
+
+    @Override
+    public double setTicketPrice(int oldSeatCount, int currentSeatCount, int totalSeatCount) {
+        double oldPercantage = ((double) oldSeatCount / (double) totalSeatCount) * 100;
+        double currentPercantage = ((double) currentSeatCount / (double) totalSeatCount) * 100;
+
+        return 0;
+    }
+
     
 }
