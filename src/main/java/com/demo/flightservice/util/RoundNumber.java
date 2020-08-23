@@ -10,6 +10,8 @@ public class RoundNumber {
 
         if (percantage < 1){
             return 0;
+        }else if(percantage == 10){
+            return 10;
         }
         percantage = Math.abs(percantage);
 
