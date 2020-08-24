@@ -35,6 +35,40 @@ Flight Service.postman_collection.json
 git clone https://github.com/selimdemirci/FlightService.git
 ```
 
+## Example Work Flow
+* Creating a Passenger.
+* Creating an Airline Company
+* Creating an Airport for start point(from)
+* Creating an Airport for destination
+* Creating a Flight Route
+* Creating a Flight
+* Make Ticket Reservations
+
+## ENUM Types
+
+##### Plane Types
+* With this ENUM you can easily manage plane passenger capacity.
+
+###### CANADAIR
+* It has 6 passanger capacity by default.
+
+###### AIRBUS
+* It has 12 passanger capacity by default.
+
+###### BOEING
+* It has 24 passanger capacity by default.
+
+
+##### Ticket Status
+* With this ENUM you can distinguish is ticket cancelled or still proceed.
+
+###### PROCEED
+* Ticket is still valid.
+
+###### CANCELLED
+* Ticket is cancelled.
+
+
 ## Rest Services
 
 ### Passenger
