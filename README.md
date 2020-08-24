@@ -75,6 +75,7 @@ git clone https://github.com/selimdemirci/FlightService.git
 
 ##### Create
 * It creates a passenger with billing account.
+* While Credit Card Number persisting to database, it will be masked.
 
 ```
 /passenger/create
