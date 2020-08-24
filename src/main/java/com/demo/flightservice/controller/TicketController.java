@@ -43,7 +43,7 @@ public class TicketController {
     }
 
     @DeleteMapping(value = "/deleteReservation",  produces = "application/json")
-    public ResponseEntity<String> deleteReservation(@RequestParam long id){
+    public ResponseEntity<ReservationDTO> deleteReservation(@RequestParam long id){
         return new ResponseEntity<>(ticketService.deleteReservation(id), HttpStatus.OK);
     }
 }

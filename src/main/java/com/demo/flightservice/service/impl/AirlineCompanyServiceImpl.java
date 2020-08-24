@@ -3,6 +3,8 @@ package com.demo.flightservice.service.impl;
 import java.util.List;
 
 import com.demo.flightservice.dto.airline.AirlineCompanyDTO;
+import com.demo.flightservice.exception.AirlineCompanyException;
+import com.demo.flightservice.exception.DataNotFoundException;
 import com.demo.flightservice.model.AirlineCompany;
 import com.demo.flightservice.repository.AirlineCompanyRepository;
 import com.demo.flightservice.service.AirlineCompanyService;
@@ -26,18 +28,19 @@ public class AirlineCompanyServiceImpl implements AirlineCompanyService {
 
     @Override
     public AirlineCompanyDTO add(AirlineCompanyDTO company) {
-        AirlineCompany newCompany = airlineCompanyRepository.save(modelMapper.map(company, AirlineCompany.class));
+        AirlineCompany newCompany;
+        try {
+            newCompany = airlineCompanyRepository.save(modelMapper.map(company, AirlineCompany.class));
+        } catch (Exception e) {
+            throw new AirlineCompanyException(company.getName() + " already exists!");
+        }
         return modelMapper.map(newCompany, AirlineCompanyDTO.class);
     }
 
     @Override
-    public boolean isExist(String companyName) {
-        return airlineCompanyRepository.existsByName(companyName);
-    }
-
-    @Override
     public AirlineCompany findByName(String companyName) {
-        return airlineCompanyRepository.findByName(companyName);
+        return airlineCompanyRepository.findByName(companyName)
+            .orElseThrow(() -> new DataNotFoundException("Airline company " + companyName + " not found!"));
     }
 
     @Override
@@ -47,7 +50,8 @@ public class AirlineCompanyServiceImpl implements AirlineCompanyService {
 
     @Override
     public AirlineCompanyDTO getByName(String companyName) {
-        return modelMapper.map(airlineCompanyRepository.findByName(companyName), AirlineCompanyDTO.class);
+        return modelMapper.map(airlineCompanyRepository.findByName(companyName)
+            .orElseThrow(() -> new DataNotFoundException("Airline company " + companyName + " not found!")), AirlineCompanyDTO.class);
     }
     
 }

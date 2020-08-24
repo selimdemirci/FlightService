@@ -3,6 +3,7 @@ package com.demo.flightservice.service.impl;
 import com.demo.flightservice.dto.ticket.ReservationDTO;
 import com.demo.flightservice.dto.ticket.TicketDTO;
 import com.demo.flightservice.enums.TicketStatus;
+import com.demo.flightservice.exception.DataNotFoundException;
 import com.demo.flightservice.exception.TicketException;
 import com.demo.flightservice.model.Flight;
 import com.demo.flightservice.model.Passenger;
@@ -40,7 +41,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public ReservationDTO cancelReservation(long id) {
-        Ticket ticket = ticketRepository.findById(id).get();
+        Ticket ticket = ticketRepository.findById(id).orElseThrow(() -> new DataNotFoundException("Ticket not found! Reservation can't cancel."));
         
         if(ticket.getTicketStatus() == TicketStatus.CANCELLED){
             throw new TicketException("Ticket is already cancelled!");
@@ -72,10 +73,8 @@ public class TicketServiceImpl implements TicketService {
         Flight flight = flightService.findById(reservation.getFlightId());
         Passenger passenger = passengerService.findById(reservation.getPassengerId());
 
-        if(flight == null || passenger == null){
-            throw new TicketException("Flight or passenger does not exist.");
-        }else if(flight.getBookedSeatsCount() == flight.getTotalSeatsCount()){
-            throw new TicketException("Seats all booked!");
+        if(flight.getBookedSeatsCount() == flight.getTotalSeatsCount()){
+            throw new TicketException("Seats all booked! Flight ID " + flight.getId());
         }
 
         Ticket ticket = new Ticket();
@@ -88,7 +87,7 @@ public class TicketServiceImpl implements TicketService {
         setTicketPriceAndExtraPriceCoefficient(ticket, flight);
 
         if(passenger.getBudget() < ticket.getPrice()){
-            throw new TicketException("Insufficient budget.");
+            throw new TicketException("Insufficient budget! Your budget: " + passenger.getBudget() + " - Ticket price: " + ticket.getPrice());
         }
         
         double currentBudget = passenger.getBudget() - ticket.getPrice();
@@ -103,7 +102,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public TicketDTO findTicketById(long id) {
-        Ticket ticket = ticketRepository.findById(id).get();
+        Ticket ticket = ticketRepository.findById(id).orElseThrow(() -> new DataNotFoundException("Ticket with ID " + id + " not found!"));
         Flight flight = flightService.findById(ticket.getFlight().getId());
         Passenger passenger = passengerService.findById(ticket.getPassenger().getId());
 
@@ -111,14 +110,17 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public String deleteReservation(long id) {
-        Ticket ticket = ticketRepository.findById(id).get();
+    public ReservationDTO deleteReservation(long id) {
+        Ticket ticket = ticketRepository.findById(id).orElseThrow(() -> new DataNotFoundException("Ticket with ID " + id + " not found!"));
+        ReservationDTO reservationDTO = new ReservationDTO();
         if(ticket.getTicketStatus() == TicketStatus.CANCELLED){
-            ticketRepository.deleteById(id);
-            return "Ticket number " + id + " has been deleted.";
+            ticketRepository.deleteById(id); 
+            reservationDTO.setFlightId(ticket.getFlight().getId());
+            reservationDTO.setPassengerId(ticket.getPassenger().getId());      
         }else{
-            return "Ticket number " + id + " can not delete. Firstly, you have to update ticket status as 'CANCELLED'.";
+            throw new TicketException("Ticket number " + id + " can not delete. Firstly, you have to update ticket status as 'CANCELLED'.");
         }
+        return reservationDTO;
     }
 
     @Override

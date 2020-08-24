@@ -3,6 +3,7 @@ package com.demo.flightservice.service.impl;
 import java.util.List;
 
 import com.demo.flightservice.dto.passenger.PassengerDTO;
+import com.demo.flightservice.exception.DataNotFoundException;
 import com.demo.flightservice.model.Passenger;
 import com.demo.flightservice.repository.PassengerRepository;
 import com.demo.flightservice.service.PassengerService;
@@ -36,7 +37,8 @@ public class PassengerServiceImpl implements PassengerService {
 
     @Override
     public PassengerDTO getById(long id) {
-        return modelMapper.map(passengerRepository.findById(id).get(), PassengerDTO.class);
+        return modelMapper.map(passengerRepository.findById(id)
+            .orElseThrow(() -> new DataNotFoundException("Passenger with ID " + id + " not found!")), PassengerDTO.class);
     }
 
     @Override
@@ -46,7 +48,8 @@ public class PassengerServiceImpl implements PassengerService {
 
     @Override
     public Passenger findById(long id) {
-        return modelMapper.map(passengerRepository.findById(id).get(), Passenger.class);
+        return modelMapper.map(passengerRepository.findById(id)
+            .orElseThrow(() -> new DataNotFoundException("Passenger with ID " + id + " not found!")), Passenger.class);
     }
 
     @Override

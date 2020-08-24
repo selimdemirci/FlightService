@@ -9,9 +9,8 @@ public interface TicketService {
 
     void setTicketPriceAndExtraPriceCoefficient(Ticket ticket, Flight flight);
     void setExtraPriceCoefficient(Flight flight);
-
-    String deleteReservation(long id);
-
+    
+    ReservationDTO deleteReservation(long id);
     ReservationDTO cancelReservation(long id);
 
     TicketDTO findTicketById(long id);

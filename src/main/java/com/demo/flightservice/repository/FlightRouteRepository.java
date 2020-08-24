@@ -1,5 +1,7 @@
 package com.demo.flightservice.repository;
 
+import java.util.Optional;
+
 import com.demo.flightservice.model.Airport;
 import com.demo.flightservice.model.FlightRoute;
 
@@ -12,6 +14,6 @@ public interface FlightRouteRepository extends JpaRepository<FlightRoute, Long>{
     int flightRouteCount(Airport from, Airport destination);
 
     @Query(value = "from FlightRoute where FROM_AIRPORT_ID = ?1 and DESTINATION_AIRPORT_ID = ?2")
-    FlightRoute find(Airport from, Airport destination);
+    Optional<FlightRoute> find(Airport from, Airport destination);
 
 }

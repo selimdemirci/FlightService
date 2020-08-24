@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.demo.flightservice.dto.flight.FlightRouteDTO;
 import com.demo.flightservice.dto.flight.FlightRouteWithAirportsDTO;
+import com.demo.flightservice.exception.DataNotFoundException;
 import com.demo.flightservice.exception.FlightRouteException;
 import com.demo.flightservice.model.Airport;
 import com.demo.flightservice.model.FlightRoute;
@@ -32,27 +33,28 @@ public class FlightRouteServiceImpl implements FlightRouteService {
 
     @Override
     public FlightRouteWithAirportsDTO add(FlightRouteDTO flightRoute) {   
-        FlightRoute newFlightRoute = new FlightRoute();
+        FlightRoute newFlightRoute;
 
-        if (airportService.isAirportsExist(flightRoute) && !flightRoute.getFrom().equals(flightRoute.getDestination())) {
+        if (!flightRoute.getFrom().equals(flightRoute.getDestination())) {
             Airport from = airportService.findByName(flightRoute.getFrom());
             Airport destination = airportService.findByName(flightRoute.getDestination());
 
             if (isFlightRouteExist(from, destination)) {
-                throw new FlightRouteException("Flight route already exists!");
+                throw new FlightRouteException("Flight route already exists! From: " + from.getName() + " - Destination: " + destination.getName());
             }
-
             newFlightRoute = flightRouteRepository.save(create(from, destination));
         }else{
-            throw new FlightRouteException("Flight route can not create!");
+            throw new FlightRouteException("Already this flight route exists!");
         }
         return modelMapper.map(newFlightRoute, FlightRouteWithAirportsDTO.class);
     }
 
+    @Override
     public boolean isFlightRouteExist(Airport from, Airport destination) {
         return flightRouteRepository.flightRouteCount(from, destination) > 0;
     }
 
+    @Override
     public boolean isFlightRouteExist(String from, String destination) {
         Airport fromA = airportService.findByName(from);
         Airport destinationA = airportService.findByName(destination);
@@ -71,7 +73,8 @@ public class FlightRouteServiceImpl implements FlightRouteService {
 
     @Override
     public FlightRoute find(Airport from, Airport destination) {
-        return flightRouteRepository.find(from, destination);
+        return flightRouteRepository.find(from, destination)
+            .orElseThrow(() -> new DataNotFoundException("Flight route from " + from.getName() + " to " + destination.getName() + " not found!"));
     }
 
     @Override
@@ -81,6 +84,7 @@ public class FlightRouteServiceImpl implements FlightRouteService {
 
     @Override
     public FlightRouteWithAirportsDTO getById(long id) {
-        return modelMapper.map(flightRouteRepository.findById(id).get(), FlightRouteWithAirportsDTO.class);
+        return modelMapper.map(flightRouteRepository.findById(id)
+            .orElseThrow(() -> new DataNotFoundException("Flight route with ID " + id + " not found!")), FlightRouteWithAirportsDTO.class);
     }
 }

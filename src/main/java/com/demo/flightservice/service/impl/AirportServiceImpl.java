@@ -3,8 +3,8 @@ package com.demo.flightservice.service.impl;
 import java.util.List;
 
 import com.demo.flightservice.dto.airport.AirportDTO;
-import com.demo.flightservice.dto.flight.FlightRouteDTO;
 import com.demo.flightservice.exception.AirportException;
+import com.demo.flightservice.exception.DataNotFoundException;
 import com.demo.flightservice.model.Airport;
 import com.demo.flightservice.repository.AirportRepository;
 import com.demo.flightservice.service.AirportService;
@@ -28,36 +28,29 @@ public class AirportServiceImpl implements AirportService {
 
     @Override
     public AirportDTO add(AirportDTO airport) {
-        Airport newAirport = airportRepository.save( modelMapper.map(airport, Airport.class));
+        Airport newAirport;
+        try {
+            newAirport = airportRepository.save( modelMapper.map(airport, Airport.class));
+        } catch (Exception e) {
+            throw new AirportException(airport.getName() + " already exists!");
+        }
         return modelMapper.map(newAirport, AirportDTO.class);
     }
 
     @Override
-    public boolean isExist(String airportName) {
-        return airportRepository.existsByName(airportName);
-    }
-
-    @Override
     public Airport findByName(String airportName) {
-        return airportRepository.findByName(airportName);
+        return airportRepository.findByName(airportName)
+            .orElseThrow(() -> new DataNotFoundException(airportName + " Airport not found!"));
     }
 
     @Override
     public AirportDTO getByName(String airportName) {
-        AirportDTO airport = modelMapper.map(findByName(airportName), AirportDTO.class);  
-        if(airport == null){
-            throw new AirportException("Airport does not exist.");
-        }
-        return airport;
+        return modelMapper.map(airportRepository.findByName(airportName)
+            .orElseThrow(() -> new DataNotFoundException(airportName + " Airport not found!")), AirportDTO.class);
     }
 
     @Override
     public List<AirportDTO> getAllAirports() {
         return modelMapper.map(airportRepository.findAll(), new TypeToken<List<AirportDTO>>(){}.getType());
-    }
-    
-    @Override
-    public boolean isAirportsExist(FlightRouteDTO flightRoute) {
-        return isExist(flightRoute.getFrom()) && isExist(flightRoute.getDestination());
     }
 }

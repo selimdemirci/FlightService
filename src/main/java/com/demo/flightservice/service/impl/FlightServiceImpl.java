@@ -8,7 +8,7 @@ import com.demo.flightservice.dto.flight.FlightDTO;
 import com.demo.flightservice.dto.flight.NewFlightDTO;
 import com.demo.flightservice.dto.flight.ResponseFlightDTO;
 import com.demo.flightservice.enums.PlaneType;
-import com.demo.flightservice.exception.FlightException;
+import com.demo.flightservice.exception.DataNotFoundException;
 import com.demo.flightservice.model.Flight;
 import com.demo.flightservice.repository.FlightRepository;
 import com.demo.flightservice.service.AirlineCompanyService;
@@ -43,28 +43,20 @@ public class FlightServiceImpl implements FlightService {
     public ResponseFlightDTO add(NewFlightDTO newFlight) {
         Flight flight = new Flight();
 
-        if (airlineCompanyService.isExist(newFlight.getCompany())
-                && flightRouteService.isFlightRouteExist(newFlight.getFrom(), newFlight.getDestination())) {
+        PlaneType planeType = newFlight.getPlaneType();
+        int totalSeatsCount = planeType.getValue();
 
-            PlaneType planeType = newFlight.getPlaneType();
-            int totalSeatsCount = planeType.getValue();
-            // If totalSeatsCountplane = 0, that means plane type does not exist so flight
-            // will not be create.
-            if (totalSeatsCount == 0) {
-                throw new FlightException("All seats booked!");
-            }
+        flight.setTotalSeatsCount(totalSeatsCount);
+        flight.setCompany(airlineCompanyService.findByName(newFlight.getCompany()));
+        flight.setRoute(flightRouteService.find(airportService.findByName(newFlight.getFrom()),
+                airportService.findByName(newFlight.getDestination())));
+        flight.setPlaneType(planeType);
+        flight.setDepartureTime(newFlight.getDepartureTime());
+        flight.setPrice(newFlight.getPrice());
+        flight.setDepartureTime(newFlight.getDepartureTime());
 
-            flight.setTotalSeatsCount(totalSeatsCount);
-            flight.setCompany(airlineCompanyService.findByName(newFlight.getCompany()));
-            flight.setRoute(flightRouteService.find(airportService.findByName(newFlight.getFrom()),
-                    airportService.findByName(newFlight.getDestination())));
-            flight.setPlaneType(planeType);
-            flight.setDepartureTime(newFlight.getDepartureTime());
-            flight.setPrice(newFlight.getPrice());
-            flight.setDepartureTime(newFlight.getDepartureTime());
+        flightRepository.save(flight);
 
-            flightRepository.save(flight);
-        }
         return modelMapper.map(flight, ResponseFlightDTO.class);
     }
 
@@ -75,7 +67,8 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public Flight findById(long id) {
-        return modelMapper.map(flightRepository.findById(id).get(), Flight.class);
+        return modelMapper.map(flightRepository.findById(id)
+            .orElseThrow(() -> new DataNotFoundException("Flight with ID " + id + " not found!")), Flight.class);
     }
 
     @Override
@@ -85,7 +78,8 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public FlightDTO getById(long id) {
-        return modelMapper.map(flightRepository.findById(id).get(), FlightDTO.class);
+        return modelMapper.map(flightRepository.findById(id)
+            .orElseThrow(() -> new DataNotFoundException("Flight with ID " + id + " not found!")), FlightDTO.class);
     }
 
     @Override

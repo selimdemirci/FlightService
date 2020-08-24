@@ -7,8 +7,6 @@ import com.demo.flightservice.model.AirlineCompany;
 
 public interface AirlineCompanyService {
 
-    boolean isExist(String companyName);
-
     AirlineCompany findByName(String companyName);
 
     AirlineCompanyDTO add(AirlineCompanyDTO company);
