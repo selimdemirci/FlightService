@@ -25,13 +25,9 @@ public class AirlineCompanyServiceImpl implements AirlineCompanyService {
     }
 
     @Override
-    public boolean add(AirlineCompanyDTO company) {
-        if(!isExist(company.getName())){
-            AirlineCompany newCompany = modelMapper.map(company, AirlineCompany.class);
-            airlineCompanyRepository.save(newCompany);
-            return true;
-        }
-        return false;
+    public AirlineCompanyDTO add(AirlineCompanyDTO company) {
+        AirlineCompany newCompany = airlineCompanyRepository.save(modelMapper.map(company, AirlineCompany.class));
+        return modelMapper.map(newCompany, AirlineCompanyDTO.class);
     }
 
     @Override

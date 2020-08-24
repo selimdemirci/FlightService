@@ -41,6 +41,11 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public ReservationDTO cancelReservation(long id) {
         Ticket ticket = ticketRepository.findById(id).get();
+        
+        if(ticket.getTicketStatus() == TicketStatus.CANCELLED){
+            throw new TicketException("Ticket is already cancelled!");
+        }
+
         Flight flight = flightService.findById(ticket.getFlight().getId());
         Passenger passenger = passengerService.findById(ticket.getPassenger().getId());
 
@@ -71,8 +76,6 @@ public class TicketServiceImpl implements TicketService {
             throw new TicketException("Flight or passenger does not exist.");
         }else if(flight.getBookedSeatsCount() == flight.getTotalSeatsCount()){
             throw new TicketException("Seats all booked!");
-        }else if(passenger.getBudget() < flight.getPrice()){
-            throw new TicketException("Insufficient budget.");
         }
 
         Ticket ticket = new Ticket();
@@ -83,6 +86,10 @@ public class TicketServiceImpl implements TicketService {
 
         flight.setBookedSeatsCount(flight.getBookedSeatsCount() + 1);
         setTicketPriceAndExtraPriceCoefficient(ticket, flight);
+
+        if(passenger.getBudget() < ticket.getPrice()){
+            throw new TicketException("Insufficient budget.");
+        }
         
         double currentBudget = passenger.getBudget() - ticket.getPrice();
         passenger.setBudget(currentBudget);

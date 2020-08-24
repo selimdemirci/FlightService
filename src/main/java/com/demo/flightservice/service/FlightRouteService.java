@@ -9,13 +9,13 @@ import com.demo.flightservice.model.FlightRoute;
 
 public interface FlightRouteService {
     
-    boolean add(FlightRouteDTO flightRoute);
     boolean isFlightRouteExist(Airport from, Airport destination);
     boolean isFlightRouteExist(String from, String destination);
 
     FlightRoute create(Airport from, Airport destination);
     FlightRoute find(Airport from, Airport destination);
 
+    FlightRouteWithAirportsDTO add(FlightRouteDTO flightRoute);
     FlightRouteWithAirportsDTO getById(long id);
     List<FlightRouteWithAirportsDTO> getAllFlightRoutes();
 }

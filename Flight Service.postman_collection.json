@@ -367,15 +367,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/flight/route/create",
+							"raw": "http://localhost:8080/flightRoute/create",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"flight",
-								"route",
+								"flightRoute",
 								"create"
 							]
 						}
@@ -400,15 +399,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/flight/route/find?id=1",
+							"raw": "http://localhost:8080/flightRoute/find?id=1",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"flight",
-								"route",
+								"flightRoute",
 								"find"
 							],
 							"query": [
@@ -439,15 +437,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/flight/route/all",
+							"raw": "http://localhost:8080/flightRoute/all",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"flight",
-								"route",
+								"flightRoute",
 								"all"
 							]
 						}

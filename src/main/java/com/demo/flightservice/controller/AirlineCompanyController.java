@@ -27,14 +27,9 @@ public class AirlineCompanyController {
         this.airlineCompanyService = airlineCompanyService;
     }
 
-    @PostMapping(value="/create")
-    public ResponseEntity<String> addAirlineCompany(@Validated @RequestBody AirlineCompanyDTO company) {
-        boolean isCreated = airlineCompanyService.add(company);
-        if(isCreated){
-            return new ResponseEntity<>("Company has been created.", HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>("Company couldn't created.", HttpStatus.BAD_REQUEST);
-        }
+    @PostMapping(value="/create", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<AirlineCompanyDTO> addAirlineCompany(@Validated @RequestBody AirlineCompanyDTO company) {
+        return new ResponseEntity<>(airlineCompanyService.add(company), HttpStatus.CREATED);
     }
     
     @GetMapping(value="/all", produces = "application/json")
@@ -43,7 +38,7 @@ public class AirlineCompanyController {
     }
 
     @GetMapping(value="/find", produces = "application/json")
-    public ResponseEntity<AirlineCompanyDTO> findAirlineCompany(@RequestParam String company) {
+    public ResponseEntity<AirlineCompanyDTO> findAirlineCompanyByName(@RequestParam String company) {
         return new ResponseEntity<>(airlineCompanyService.getByName(company), HttpStatus.OK);
     }
     

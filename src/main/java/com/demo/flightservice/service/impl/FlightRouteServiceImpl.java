@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.demo.flightservice.dto.flight.FlightRouteDTO;
 import com.demo.flightservice.dto.flight.FlightRouteWithAirportsDTO;
+import com.demo.flightservice.exception.FlightRouteException;
 import com.demo.flightservice.model.Airport;
 import com.demo.flightservice.model.FlightRoute;
 import com.demo.flightservice.repository.FlightRouteRepository;
@@ -30,20 +31,22 @@ public class FlightRouteServiceImpl implements FlightRouteService {
     }
 
     @Override
-    public boolean add(FlightRouteDTO flightRoute) {
+    public FlightRouteWithAirportsDTO add(FlightRouteDTO flightRoute) {   
+        FlightRoute newFlightRoute = new FlightRoute();
 
         if (airportService.isAirportsExist(flightRoute) && !flightRoute.getFrom().equals(flightRoute.getDestination())) {
             Airport from = airportService.findByName(flightRoute.getFrom());
             Airport destination = airportService.findByName(flightRoute.getDestination());
 
             if (isFlightRouteExist(from, destination)) {
-                return false;
+                throw new FlightRouteException("Flight route already exists!");
             }
 
-            flightRouteRepository.save(create(from, destination));
-            return true;
+            newFlightRoute = flightRouteRepository.save(create(from, destination));
+        }else{
+            throw new FlightRouteException("Flight route can not create!");
         }
-        return false;
+        return modelMapper.map(newFlightRoute, FlightRouteWithAirportsDTO.class);
     }
 
     public boolean isFlightRouteExist(Airport from, Airport destination) {

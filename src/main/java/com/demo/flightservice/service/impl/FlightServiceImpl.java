@@ -6,7 +6,9 @@ import javax.transaction.Transactional;
 
 import com.demo.flightservice.dto.flight.FlightDTO;
 import com.demo.flightservice.dto.flight.NewFlightDTO;
+import com.demo.flightservice.dto.flight.ResponseFlightDTO;
 import com.demo.flightservice.enums.PlaneType;
+import com.demo.flightservice.exception.FlightException;
 import com.demo.flightservice.model.Flight;
 import com.demo.flightservice.repository.FlightRepository;
 import com.demo.flightservice.service.AirlineCompanyService;
@@ -38,7 +40,9 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public boolean add(NewFlightDTO newFlight) {
+    public ResponseFlightDTO add(NewFlightDTO newFlight) {
+        Flight flight = new Flight();
+
         if (airlineCompanyService.isExist(newFlight.getCompany())
                 && flightRouteService.isFlightRouteExist(newFlight.getFrom(), newFlight.getDestination())) {
 
@@ -47,10 +51,9 @@ public class FlightServiceImpl implements FlightService {
             // If totalSeatsCountplane = 0, that means plane type does not exist so flight
             // will not be create.
             if (totalSeatsCount == 0) {
-                return false;
+                throw new FlightException("All seats booked!");
             }
 
-            Flight flight = new Flight();
             flight.setTotalSeatsCount(totalSeatsCount);
             flight.setCompany(airlineCompanyService.findByName(newFlight.getCompany()));
             flight.setRoute(flightRouteService.find(airportService.findByName(newFlight.getFrom()),
@@ -61,9 +64,8 @@ public class FlightServiceImpl implements FlightService {
             flight.setDepartureTime(newFlight.getDepartureTime());
 
             flightRepository.save(flight);
-            return true;
         }
-        return false;
+        return modelMapper.map(flight, ResponseFlightDTO.class);
     }
 
     @Override

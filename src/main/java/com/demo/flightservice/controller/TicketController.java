@@ -33,7 +33,7 @@ public class TicketController {
 
     
     @GetMapping(value="/find", produces = "application/json")
-    public ResponseEntity<TicketDTO> findPassenger(@RequestParam long id) {
+    public ResponseEntity<TicketDTO> findTicketById(@RequestParam long id) {
         return new ResponseEntity<>(ticketService.findTicketById(id), HttpStatus.OK);
     }
 

@@ -28,9 +28,10 @@ public class PassengerServiceImpl implements PassengerService {
     }
 
     @Override
-    public void add(PassengerDTO passenger) {
+    public PassengerDTO add(PassengerDTO passenger) {
         passenger.setCreditCardNumber(maskUtility.maskCreditCardNumber(passenger.getCreditCardNumber()));
-        passengerRepository.save(modelMapper.map(passenger, Passenger.class));
+        Passenger newPassenger = passengerRepository.save(modelMapper.map(passenger, Passenger.class));
+        return modelMapper.map(newPassenger, PassengerDTO.class);
     }
 
     @Override

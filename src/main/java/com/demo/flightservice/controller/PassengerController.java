@@ -25,10 +25,9 @@ public class PassengerController {
         this.passengerService = passengerService;
     }
 
-    @PostMapping(path = "/create", consumes = "application/json")
-    public ResponseEntity<String> createPassenger(@Validated @RequestBody PassengerDTO passenger){
-        passengerService.add(passenger);
-        return ResponseEntity.ok("Passenger has been created.");
+    @PostMapping(path = "/create", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<PassengerDTO> createPassenger(@Validated @RequestBody PassengerDTO passenger){
+        return new ResponseEntity<>(passengerService.add(passenger), HttpStatus.CREATED);
     }
 
     @GetMapping(value="/all", produces = "application/json")

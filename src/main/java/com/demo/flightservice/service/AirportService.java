@@ -8,12 +8,12 @@ import com.demo.flightservice.model.Airport;
 
 public interface AirportService {
 
-    boolean add(AirportDTO airport);
     boolean isExist(String airportName);
     boolean isAirportsExist(FlightRouteDTO flightRoute);
     
     Airport findByName(String airportName);
 
+    AirportDTO add(AirportDTO airport);
     AirportDTO getByName(String airportName);
     List<AirportDTO> getAllAirports();
 }

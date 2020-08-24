@@ -7,11 +7,11 @@ import com.demo.flightservice.model.AirlineCompany;
 
 public interface AirlineCompanyService {
 
-    boolean add(AirlineCompanyDTO company);
     boolean isExist(String companyName);
 
     AirlineCompany findByName(String companyName);
 
+    AirlineCompanyDTO add(AirlineCompanyDTO company);
     AirlineCompanyDTO getByName(String companyName);
     List<AirlineCompanyDTO> getAllCompanies();
 }

@@ -27,13 +27,9 @@ public class AirportServiceImpl implements AirportService {
     }
 
     @Override
-    public boolean add(AirportDTO airport) {
-        if (!airportRepository.existsByName(airport.getName())) {
-            Airport newAirport = modelMapper.map(airport, Airport.class);
-            airportRepository.save(newAirport);
-            return true;
-        }
-        return false;
+    public AirportDTO add(AirportDTO airport) {
+        Airport newAirport = airportRepository.save( modelMapper.map(airport, Airport.class));
+        return modelMapper.map(newAirport, AirportDTO.class);
     }
 
     @Override

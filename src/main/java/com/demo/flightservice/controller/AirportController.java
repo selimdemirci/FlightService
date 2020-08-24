@@ -25,14 +25,9 @@ public class AirportController {
         this.airportService = airportService;
     }
 
-    @PostMapping(path = "/create")
-    public ResponseEntity<String> createAirport(@Validated @RequestBody AirportDTO airport){
-        boolean isCreated = airportService.add(airport);
-        if(isCreated){
-            return new ResponseEntity<>("Airport has been created.", HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>("Airport couldn't created.", HttpStatus.BAD_REQUEST);
-        }
+    @PostMapping(path = "/create", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<AirportDTO> createAirport(@Validated @RequestBody AirportDTO airport){
+        return new ResponseEntity<>(airportService.add(airport), HttpStatus.CREATED);
     }
 
     @GetMapping(value="/all", produces = "application/json")
