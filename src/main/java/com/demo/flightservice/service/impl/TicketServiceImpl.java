@@ -1,5 +1,7 @@
 package com.demo.flightservice.service.impl;
 
+import java.util.List;
+
 import com.demo.flightservice.dto.ticket.ReservationDTO;
 import com.demo.flightservice.dto.ticket.TicketDTO;
 import com.demo.flightservice.enums.TicketStatus;
@@ -52,6 +54,9 @@ public class TicketServiceImpl implements TicketService {
 
         ticket.setTicketStatus(TicketStatus.CANCELLED);
 
+        List<Integer> flightSeats = flight.getCancelledSeats();
+        flightSeats.add(Integer.parseInt(ticket.getSeat()));
+        flight.setCancelledSeats(flightSeats);
         flight.setBookedSeatsCount(flight.getBookedSeatsCount() - 1);
         setExtraPriceCoefficient(flight);
 
@@ -80,7 +85,13 @@ public class TicketServiceImpl implements TicketService {
         Ticket ticket = new Ticket();
         ticket.setFlight(flight);
         ticket.setPassenger(passenger);
-        ticket.setSeat(Integer.toString(flight.getBookedSeatsCount() + 1));
+
+        if(!flight.getCancelledSeats().isEmpty()){
+            ticket.setSeat(Integer.toString(flight.getCancelledSeats().get(0)));
+            flight.getCancelledSeats().remove(flight.getCancelledSeats().get(0));
+        }else{
+            ticket.setSeat(Integer.toString(flight.getBookedSeatsCount() + 1));
+        }
         ticket.setTicketStatus(TicketStatus.PROCEED);
 
         flight.setBookedSeatsCount(flight.getBookedSeatsCount() + 1);

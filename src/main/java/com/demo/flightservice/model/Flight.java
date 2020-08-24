@@ -1,7 +1,10 @@
 package com.demo.flightservice.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -33,6 +36,9 @@ public class Flight {
     private double extraPriceCoefficient;
     private int bookedSeatsCount;
     private int totalSeatsCount;
+
+    @ElementCollection
+    List<Integer> cancelledSeats = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private PlaneType planeType;
