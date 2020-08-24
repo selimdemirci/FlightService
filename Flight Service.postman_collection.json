@@ -706,7 +706,7 @@
 					"response": []
 				},
 				{
-					"name": "Reservation Cancellation",
+					"name": "Delete Ticket",
 					"request": {
 						"method": "DELETE",
 						"header": [],
@@ -741,7 +741,7 @@
 					"response": []
 				},
 				{
-					"name": "Get Ticket Information",
+					"name": "Find Ticket",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
